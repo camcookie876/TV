@@ -115,11 +115,19 @@
         // Movie data for featured apps
         const featuredMovies = [
             {
-                name: "Movies",
-                poster: "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
-                link: "https://camcookie876.github.io/TV/movies/1.html"
+            name: "Robin & The Realms of Light",
+            poster: "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
+            link: "https://camcookie876.github.io/TV/movies/1.html"
             }
         ];
+        // Ensure poster images fit without being cut off
+        document.addEventListener('DOMContentLoaded', () => {
+            const posters = document.querySelectorAll('.poster-img');
+            posters.forEach(img => {
+            img.style.objectFit = 'contain';
+            img.style.background = '#222'; // Optional: add background for letterboxing
+            });
+        });
 
         // Key for localStorage
         const RECENT_KEY = "recentlyWatched";
