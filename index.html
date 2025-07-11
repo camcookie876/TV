@@ -55,11 +55,11 @@
             background: var(--card-bg);
             border-radius: 20px;
             width: 180px;
-            height: 180px;
+            height: 260px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             box-shadow: 0 4px 16px rgba(0,0,0,0.3);
             cursor: pointer;
             transition: 
@@ -70,6 +70,7 @@
             border: 2px solid transparent;
             position: relative;
             overflow: hidden;
+            padding-bottom: 16px;
         }
         .app-card:hover, .app-card:focus {
             transform: scale(1.06);
@@ -78,16 +79,20 @@
             outline: none;
             background: linear-gradient(135deg, var(--card-bg) 60%, var(--card-hover) 100%);
         }
-        .app-icon {
-            font-size: 3rem;
-            margin-bottom: 12px;
-            text-shadow: 0 2px 8px var(--main-color);
+        .poster-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            display: block;
         }
         .app-name {
             font-size: 1.1rem;
             font-weight: 500;
             color: #fff;
             letter-spacing: 0.5px;
+            margin-top: 8px;
         }
         @media (max-width: 600px) {
             main {
@@ -98,10 +103,107 @@
             }
             .app-card {
                 width: 120px;
-                height: 120px;
+                height: 180px;
+                padding-bottom: 8px;
+            }
+            .poster-img {
+                height: 90px;
             }
         }
     </style>
+    <script>
+        // Movie data for featured apps
+        const featuredMovies = [
+            {
+                name: "Movies",
+                poster: "https://camcookie876.github.io/TV/images/movies.jpg",
+                link: "https://www.camcookie876.github.io/TV/movies/1.html"
+            }
+        ];
+
+        // Key for localStorage
+        const RECENT_KEY = "recentlyWatched";
+
+        // Helper to save to localStorage
+        function saveRecentlyWatched(movie) {
+            let recent = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+            // Remove if already exists
+            recent = recent.filter(m => m.name !== movie.name);
+            // Add to front
+            recent.unshift(movie);
+            // Limit to 6
+            recent = recent.slice(0, 6);
+            localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+        }
+
+        // Helper to load from localStorage
+        function loadRecentlyWatched() {
+            return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+        }
+
+        // Render featured movies
+        function renderFeatured() {
+            const row = document.querySelector('.app-row[data-featured]');
+            row.innerHTML = '';
+            featuredMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.tabIndex = 0;
+                card.innerHTML = `
+                    <img class="poster-img" src="${movie.poster}" alt="${movie.name} Poster">
+                    <div class="app-name">${movie.name}</div>
+                `;
+                card.addEventListener('click', () => {
+                    saveRecentlyWatched(movie);
+                    window.open(movie.link, '_blank');
+                    renderRecentlyWatched();
+                });
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        card.click();
+                    }
+                });
+                row.appendChild(card);
+            });
+        }
+
+        // Render recently watched
+        function renderRecentlyWatched() {
+            const row = document.querySelector('.app-row[data-recent]');
+            row.innerHTML = '';
+            const recent = loadRecentlyWatched();
+            if (recent.length === 0) {
+                row.innerHTML = '<div style="color:#aaa;font-size:1rem;">No recently watched movies.</div>';
+                return;
+            }
+            recent.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.tabIndex = 0;
+                card.innerHTML = `
+                    <img class="poster-img" src="${movie.poster}" alt="${movie.name} Poster">
+                    <div class="app-name">${movie.name}</div>
+                `;
+                card.addEventListener('click', () => {
+                    saveRecentlyWatched(movie);
+                    window.open(movie.link, '_blank');
+                    renderRecentlyWatched();
+                });
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        card.click();
+                    }
+                });
+                row.appendChild(card);
+            });
+        }
+
+        // On DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeatured();
+            renderRecentlyWatched();
+        });
+    </script>
 </head>
 <body>
     <header>
