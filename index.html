@@ -111,6 +111,13 @@
             }
         }
     </style>
+    <style>
+        /* Ensure poster images fit without being cut off */
+        .poster-img {
+            object-fit: contain !important;
+            background: #222 !important;
+        }
+    </style>
     <script>
         // Movie data for featured apps
         const featuredMovies = [
@@ -120,14 +127,6 @@
             link: "https://camcookie876.github.io/TV/movies/1.html"
             }
         ];
-        // Ensure poster images fit without being cut off
-        document.addEventListener('DOMContentLoaded', () => {
-            const posters = document.querySelectorAll('.poster-img');
-            posters.forEach(img => {
-            img.style.objectFit = 'contain';
-            img.style.background = '#222'; // Optional: add background for letterboxing
-            });
-        });
 
         // Key for localStorage
         const RECENT_KEY = "recentlyWatched";
