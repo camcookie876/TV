@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camcookie TV - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --main-color: #0099ff;
+            --accent: #ffb347;
+            --bg: #181818;
+            --header-bg: #101c24;
+            --card-bg: #1a232b;
+            --card-hover: #0099ff22;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        header {
+            background: linear-gradient(90deg, var(--main-color) 0%, var(--header-bg) 100%);
+            padding: 24px 32px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            color: #fff;
+        }
+        header img {
+            height: 48px;
+            margin-right: 16px;
+            filter: drop-shadow(0 0 8px var(--main-color));
+        }
+        main {
+            padding: 40px 32px;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            color: var(--main-color);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #0099ff33;
+        }
+        .app-row {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: 
+                transform 0.2s, 
+                box-shadow 0.2s, 
+                border 0.2s;
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card:hover, .app-card:focus {
+            transform: scale(1.06);
+            box-shadow: 0 8px 32px var(--main-color), 0 2px 8px #0006;
+            border: 2px solid var(--main-color);
+            outline: none;
+            background: linear-gradient(135deg, var(--card-bg) 60%, var(--card-hover) 100%);
+        }
+        .app-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px var(--main-color);
+        }
+        .app-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 16px 8px;
+            }
+            .app-row {
+                gap: 16px;
+            }
+            .app-card {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://img.icons8.com/fluency/96/television.png" alt="TV Logo">
+        Camcookie TV
+    </header>
+    <main>
+        <div class="section-title">Featured Apps</div>
+        <div class="app-row">
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🍿</div>
+                <div class="app-name">Movies</div>
+            </div>
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">📺</div>
+                <div class="app-name">Live TV</div>
+            </div>
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🎵</div>
+                <div class="app-name">Music</div>
+            </div>
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🎮</div>
+                <div class="app-name">Games</div>
+            </div>
+        </div>
+
+        <div class="section-title">Recently Watched</div>
+        <div class="app-row">
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🎬</div>
+                <div class="app-name">Action Movie</div>
+            </div>
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🦸‍♂️</div>
+                <div class="app-name">Superhero Show</div>
+            </div>
+            <div class="app-card" tabindex="0">
+                <div class="app-icon">🐼</div>
+                <div class="app-name">Kids Cartoon</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
