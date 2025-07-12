@@ -49,26 +49,33 @@
         }
     </style>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const track = document.querySelector('.ticker-track');
-            const posters = document.querySelectorAll('.ticker-poster');
-            let totalWidth = 0;
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.querySelector('.ticker-track');
+        const posters = Array.from(track.children);
+        let trackWidth = 0;
 
-            posters.forEach(poster => {
-                totalWidth += poster.offsetWidth + 32; // 32px gap
-            });
-
-            track.style.width = `${totalWidth}px`;
-            track.style.animation = `scroll ${totalWidth / 100}s linear infinite`;
-
-            const styleSheet = document.styleSheets[0];
-            styleSheet.insertRule(`
-                @keyframes scroll {
-                    from { transform: translateX(0); }
-                    to { transform: translateX(-${totalWidth / 2}px); }
-                }
-            `, styleSheet.cssRules.length);
+        // Calculate total width of all posters
+        posters.forEach(poster => {
+            trackWidth += poster.offsetWidth + 32; // 32px gap
         });
+
+        // Set track width to fit all posters
+        track.style.width = trackWidth + 'px';
+
+        let pos = 0;
+        const speed = 1; // px per frame
+
+        function animate() {
+            pos -= speed;
+            if (Math.abs(pos) >= trackWidth / 2) {
+                pos = 0;
+            }
+            track.style.transform = `translateX(${pos}px)`;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    });
     </script>
 </head>
 <body>
