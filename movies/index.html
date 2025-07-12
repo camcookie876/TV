@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camcookie TV - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --main-color: #0099ff;
+            --accent: #ffb347;
+            --bg: #181818;
+            --header-bg: #101c24;
+            --card-bg: #1a232b;
+            --card-hover: #0099ff22;
+        }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        header {
+            background: linear-gradient(90deg, var(--main-color) 0%, var(--header-bg) 100%);
+            padding: 24px 32px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            color: #fff;
+        }
+        header img {
+            height: 48px;
+            margin-right: 16px;
+            filter: drop-shadow(0 0 8px var(--main-color));
+        }
+        main {
+            padding: 40px 32px;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            color: var(--main-color);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #0099ff33;
+        }
+        .app-row {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 180px;
+            height: 260px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: 
+                transform 0.2s, 
+                box-shadow 0.2s, 
+                border 0.2s;
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 16px;
+        }
+        .app-card:hover, .app-card:focus {
+            transform: scale(1.06);
+            box-shadow: 0 8px 32px var(--main-color), 0 2px 8px #0006;
+            border: 2px solid var(--main-color);
+            outline: none;
+            background: linear-gradient(135deg, var(--card-bg) 60%, var(--card-hover) 100%);
+        }
+        .poster-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            display: block;
+        }
+        .app-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 16px 8px;
+            }
+            .app-row {
+                gap: 16px;
+            }
+            .app-card {
+                width: 120px;
+                height: 180px;
+                padding-bottom: 8px;
+            }
+            .poster-img {
+                height: 90px;
+            }
+        }
+    </style>
+    <style>
+        /* Ensure poster images fit without being cut off */
+        .poster-img {
+            object-fit: contain !important;
+            background: #222 !important;
+        }
+    </style>
+    <script>
+        // Movie data for featured apps
+        const featuredMovies = [
+            {
+            name: "Robin & The Realms of Light",
+            poster: "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
+            link: "https://camcookie876.github.io/TV/movies/1.html"
+            }
+        ];
+
+        // Key for localStorage
+        const RECENT_KEY = "recentlyWatched";
+
+        // Helper to save to localStorage
+        function saveRecentlyWatched(movie) {
+            let recent = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+            // Remove if already exists
+            recent = recent.filter(m => m.name !== movie.name);
+            // Add to front
+            recent.unshift(movie);
+            // Limit to 6
+            recent = recent.slice(0, 6);
+            localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+        }
+
+        // Helper to load from localStorage
+        function loadRecentlyWatched() {
+            return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+        }
+
+        // Render featured movies
+        function renderFeatured() {
+            const row = document.querySelector('.app-row[data-featured]');
+            row.innerHTML = '';
+            featuredMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.tabIndex = 0;
+                card.innerHTML = `
+                    <img class="poster-img" src="${movie.poster}" alt="${movie.name} Poster">
+                    <div class="app-name">${movie.name}</div>
+                `;
+                card.addEventListener('click', () => {
+                    saveRecentlyWatched(movie);
+                    window.open(movie.link, '_blank');
+                    renderRecentlyWatched();
+                });
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        card.click();
+                    }
+                });
+                row.appendChild(card);
+            });
+        }
+
+        // Render recently watched
+        function renderRecentlyWatched() {
+            const row = document.querySelector('.app-row[data-recent]');
+            row.innerHTML = '';
+            const recent = loadRecentlyWatched();
+            if (recent.length === 0) {
+                row.innerHTML = '<div style="color:#aaa;font-size:1rem;">No recently watched movies.</div>';
+                return;
+            }
+            recent.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.tabIndex = 0;
+                card.innerHTML = `
+                    <img class="poster-img" src="${movie.poster}" alt="${movie.name} Poster">
+                    <div class="app-name">${movie.name}</div>
+                `;
+                card.addEventListener('click', () => {
+                    saveRecentlyWatched(movie);
+                    window.open(movie.link, '_blank');
+                    renderRecentlyWatched();
+                });
+                card.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        card.click();
+                    }
+                });
+                row.appendChild(card);
+            });
+        }
+
+        // On DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeatured();
+            renderRecentlyWatched();
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <img src="" alt="TV Logo" onerror="this.style.display='none';this.insertAdjacentHTML('afterend', '<span style=&quot;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:#d32f2f;color:#fff;font-weight:bold;font-size:0.9rem;box-shadow:0 0 8px #d32f2f99;margin-right:16px;&quot;>ERROR</span>');">
+        Camcookie TV - Movies
+    </header>
+    <main>
+        <div class="section-title">Featured Apps</div>
+        <div class="app-row" data-featured>
+            <!-- Featured movies will be rendered here by JavaScript -->
+        </div>
+
+        <div class="section-title">Recently Watched</div>
+        <div class="app-row" data-recent>
+            <!-- Recently watched movies will be rendered here by JavaScript -->
+        </div>
+    </main>
+</body>
+</html>
