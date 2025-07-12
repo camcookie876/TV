@@ -44,7 +44,39 @@
             font-size: 1.2em;
             color: #ccc;
         }
+        .ticker-track {
+            will-change: transform;
+        }
     </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const track = document.querySelector('.ticker-track');
+            let speed = 60; // px per second
+
+            // Duplicate posters for seamless infinite loop
+            track.innerHTML += track.innerHTML;
+
+            let trackWidth = track.scrollWidth / 2;
+            let pos = 0;
+
+            function animate() {
+                pos -= speed / 60;
+                if (Math.abs(pos) >= trackWidth) {
+                    pos = 0;
+                }
+                track.style.transform = `translateX(${pos}px)`;
+                requestAnimationFrame(animate);
+            }
+
+            // Only duplicate if not already duplicated
+            if (track.children.length < 15) {
+                track.innerHTML += track.innerHTML;
+                trackWidth = track.scrollWidth / 2;
+            }
+
+            animate();
+        });
+    </script>
     <script>
         window.addEventListener('DOMContentLoaded', function() {
             const track = document.querySelector('.ticker-track');
