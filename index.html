@@ -10,28 +10,6 @@
             color: #fff;
             font-family: Arial, sans-serif;
         }
-        .ticker-bar {
-            width: 100vw;
-            overflow: hidden;
-            background: #222;
-            padding: 16px 0;
-            box-sizing: border-box;
-            border-bottom: 2px solid #333;
-        }
-        .ticker-track {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            /* Remove animation here, will be handled by JS */
-        }
-        .ticker-poster {
-            height: 120px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            background: #333;
-            object-fit: cover;
-            display: block;
-        }
         .main-content {
             padding: 40px 24px;
             text-align: center;
@@ -44,56 +22,73 @@
             font-size: 1.2em;
             color: #ccc;
         }
-        .ticker-track {
-            will-change: transform;
-        }
+        .poster-ticker {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.poster-track {
+    display: flex;
+    animation: scrollPosters 30s linear infinite;
+}
+
+.poster-track img {
+    height: 100%;
+    margin-right: 10px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+@keyframes scrollPosters {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
     </style>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const track = document.querySelector('.ticker-track');
-        const posters = Array.from(track.children);
-        let trackWidth = 0;
+    window.addEventListener('DOMContentLoaded', () => {
+        const ticker = document.querySelector('.poster-ticker');
+        const track = ticker.querySelector('.poster-track');
 
-        // Calculate total width of all posters
-        posters.forEach(poster => {
-            trackWidth += poster.offsetWidth + 32; // 32px gap
-        });
+        // Clone the track for seamless looping
+        const clone = track.cloneNode(true);
+        ticker.appendChild(clone);
 
-        // Set track width to fit all posters
-        track.style.width = trackWidth + 'px';
+        // Optional: handle dynamic width (based on loaded images)
+        const checkImages = () => {
+            const imgs = ticker.querySelectorAll('img');
+            imgs.forEach(img => {
+                img.onerror = () => {
+                    img.style.display = 'none';
+                };
+            });
+        };
 
-        let pos = 0;
-        const speed = 1; // px per frame
-
-        function animate() {
-            pos -= speed;
-            if (Math.abs(pos) >= trackWidth / 2) {
-                pos = 0;
-            }
-            track.style.transform = `translateX(${pos}px)`;
-            requestAnimationFrame(animate);
-        }
-
-        animate();
+        checkImages(); // ensure broken posters disappear
     });
-    </script>
+</script>
 </head>
 <body>
-    <div class="ticker-bar">
-        <div class="ticker-track">
-            <img class="ticker-poster" src="https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png" alt="Robin & the Realms of Light" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster2.jpg" alt="Movie 2" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster3.jpg" alt="Movie 3" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster4.jpg" alt="Movie 4" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster5.jpg" alt="Movie 5" onerror="this.style.display='none'">
-            <!-- Repeat posters for seamless loop -->
-            <img class="ticker-poster" src="poster1.jpg" alt="Movie 1" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster2.jpg" alt="Movie 2" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster3.jpg" alt="Movie 3" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster4.jpg" alt="Movie 4" onerror="this.style.display='none'">
-            <img class="ticker-poster" src="poster5.jpg" alt="Movie 5" onerror="this.style.display='none'">
-        </div>
+<div class="poster-ticker">
+    <div class="poster-track">
+        <img src="poster1.jpg" onerror="this.style.display='none'">
+        <img src="poster2.jpg" onerror="this.style.display='none'">
+        <img src="poster3.jpg" onerror="this.style.display='none'">
+        <!-- Repeat or extend with more posters -->
     </div>
+    <!-- Duplicate for seamless loop -->
+    <div class="poster-track">
+        <img src="poster1.jpg" onerror="this.style.display='none'">
+        <img src="poster2.jpg" onerror="this.style.display='none'">
+        <img src="poster3.jpg" onerror="this.style.display='none'">
+    </div>
+</div>
     <div class="main-content">
         <h1>Welcome to Movie Home</h1>
         <p>Browse the latest movies and enjoy the moving poster ticker above.</p>
