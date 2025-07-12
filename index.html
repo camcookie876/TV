@@ -49,57 +49,25 @@
         }
     </style>
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function() {
             const track = document.querySelector('.ticker-track');
-            let speed = 60; // px per second
+            const posters = document.querySelectorAll('.ticker-poster');
+            let totalWidth = 0;
 
-            // Duplicate posters for seamless infinite loop
-            track.innerHTML += track.innerHTML;
+            posters.forEach(poster => {
+                totalWidth += poster.offsetWidth + 32; // 32px gap
+            });
 
-            let trackWidth = track.scrollWidth / 2;
-            let pos = 0;
+            track.style.width = `${totalWidth}px`;
+            track.style.animation = `scroll ${totalWidth / 100}s linear infinite`;
 
-            function animate() {
-                pos -= speed / 60;
-                if (Math.abs(pos) >= trackWidth) {
-                    pos = 0;
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                @keyframes scroll {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-${totalWidth / 2}px); }
                 }
-                track.style.transform = `translateX(${pos}px)`;
-                requestAnimationFrame(animate);
-            }
-
-            // Only duplicate if not already duplicated
-            if (track.children.length < 15) {
-                track.innerHTML += track.innerHTML;
-                trackWidth = track.scrollWidth / 2;
-            }
-
-            animate();
-        });
-    </script>
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            const track = document.querySelector('.ticker-track');
-            let speed = 60; // px per second
-            let trackWidth = track.scrollWidth;
-            let pos = 0;
-
-            function animate() {
-                pos -= speed / 60;
-                if (Math.abs(pos) >= trackWidth / 2) {
-                    pos = 0;
-                }
-                track.style.transform = `translateX(${pos}px)`;
-                requestAnimationFrame(animate);
-            }
-
-            // Duplicate posters for seamless loop if not already duplicated
-            if (track.children.length < 15) {
-                track.innerHTML += track.innerHTML;
-            }
-            trackWidth = track.scrollWidth;
-
-            animate();
+            `, styleSheet.cssRules.length);
         });
     </script>
 </head>
