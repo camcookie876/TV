@@ -21,8 +21,8 @@
         .ticker-track {
             display: flex;
             align-items: center;
-            animation: ticker 30s linear infinite;
             gap: 32px;
+            /* Remove animation here, will be handled by JS */
         }
         .ticker-poster {
             height: 120px;
@@ -30,10 +30,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
             background: #333;
             object-fit: cover;
-        }
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            display: block;
         }
         .main-content {
             padding: 40px 24px;
@@ -48,6 +45,31 @@
             color: #ccc;
         }
     </style>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            const track = document.querySelector('.ticker-track');
+            let speed = 60; // px per second
+            let trackWidth = track.scrollWidth;
+            let pos = 0;
+
+            function animate() {
+                pos -= speed / 60;
+                if (Math.abs(pos) >= trackWidth / 2) {
+                    pos = 0;
+                }
+                track.style.transform = `translateX(${pos}px)`;
+                requestAnimationFrame(animate);
+            }
+
+            // Duplicate posters for seamless loop if not already duplicated
+            if (track.children.length < 15) {
+                track.innerHTML += track.innerHTML;
+            }
+            trackWidth = track.scrollWidth;
+
+            animate();
+        });
+    </script>
 </head>
 <body>
     <div class="ticker-bar">
