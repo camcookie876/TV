@@ -10,7 +10,6 @@
       --main-color: #0099ff;
       --bg: #181818;
       --header-bg: #101c24;
-      --card-hover: #0099ff22;
     }
 
     body {
@@ -69,15 +68,11 @@
     }
 
     .poster-ticker img {
-      height: 300px;
+      width: 600px;
+      height: 900px;
       border-radius: 8px;
       object-fit: cover;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .poster-ticker img:hover {
-      transform: scale(1.05);
     }
 
     @keyframes scrollPosters {
@@ -96,18 +91,17 @@
     <div class="section-title">Featured Movies</div>
     <div class="poster-ticker-container">
       <div class="poster-ticker" id="posterTicker">
-        <!-- Posters will be injected via JavaScript -->
+        <!-- Posters injected by JavaScript -->
       </div>
     </div>
   </main>
 
   <script>
     const posterSources = [
-      "poster1.jpg",
-      "poster2.jpg",
-      "poster3.jpg",
-      "poster4.jpg"
-      // Add your own poster image paths here
+      "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
+      "https://camcookie876.github.io/TV/images/EX_1",
+      "https://camcookie876.github.io/TV/images/EX_2"
+      // Add your real poster filenames here
     ];
 
     const ticker = document.getElementById("posterTicker");
