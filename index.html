@@ -103,14 +103,20 @@
       // Add your real poster filenames here
     ];
 
-    const ticker = document.getElementById("posterTicker");
+  const ticker = document.getElementById("posterTicker");
 
-    posterSources.concat(posterSources).forEach(src => {
+  // Repeat posters to fill space and keep looping
+  const totalRepeats = 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999; // You can increase this number for longer loops
+
+  for (let i = 0; i < totalRepeats; i++) {
+    posterSources.forEach(src => {
       const img = document.createElement("img");
       img.src = src;
       img.alt = "Movie Poster";
       ticker.appendChild(img);
     });
-  </script>
+  }
+</script>
+
 </body>
 </html>
