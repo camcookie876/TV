@@ -61,22 +61,19 @@
       width: 100%;
     }
 
-    .poster-ticker {
+    .poster-ticker-wrapper {
       display: flex;
-      gap: 24px;
-      animation: scrollPosters 40s linear infinite;
+      width: max-content;
+      animation: scrollPosters linear infinite;
     }
-.poster-ticker img {
-  width: 250px;
-  height: 375px;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
 
-    @keyframes scrollPosters {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    .poster-ticker img {
+      width: 250px;
+      height: 375px;
+      border-radius: 8px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      margin-right: 24px;
     }
   </style>
 </head>
@@ -89,7 +86,7 @@
   <main>
     <div class="section-title">Featured Movies</div>
     <div class="poster-ticker-container">
-      <div class="poster-ticker" id="posterTicker">
+      <div class="poster-ticker-wrapper" id="posterTicker">
         <!-- Posters injected by JavaScript -->
       </div>
     </div>
@@ -100,23 +97,37 @@
       "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
       "https://camcookie876.github.io/TV/images/EX_1.png",
       "https://camcookie876.github.io/TV/images/EX_2.png"
-      // Add your real poster filenames here
     ];
 
-  const ticker = document.getElementById("posterTicker");
+    const ticker = document.getElementById("posterTicker");
 
-  // Repeat posters to fill space and keep looping
-  const totalRepeats = 999; // You can increase this number for longer loops
+    // Duplicate posters for smooth looping
+    for (let i = 0; i < 2; i++) {
+      posterSources.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "Movie Poster";
+        img.classList.add("poster-ticker");
+        ticker.appendChild(img);
+      });
+    }
 
-  for (let i = 0; i < totalRepeats; i++) {
-    posterSources.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = "Movie Poster";
-      ticker.appendChild(img);
-    });
-  }
-</script>
+    // Calculate total scroll width and adjust animation duration dynamically
+    window.onload = () => {
+      const totalWidth = ticker.scrollWidth;
+      const speed = 60; // pixels per second
 
+      ticker.style.animationDuration = `${totalWidth / speed}s`;
+
+      const styleBlock = document.createElement("style");
+      styleBlock.innerHTML = `
+        @keyframes scrollPosters {
+          from { transform: translateX(0); }
+          to { transform: translateX(-${totalWidth / 2}px); }
+        }
+      `;
+      document.head.appendChild(styleBlock);
+    };
+  </script>
 </body>
 </html>
