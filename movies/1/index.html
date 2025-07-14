@@ -110,6 +110,61 @@
                 height: 250px;
             }
         }
+        .overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 20, 0.95);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-container {
+  max-width: 800px;
+  width: 90%;
+  padding: 20px;
+  background: #000000cc;
+  border-radius: 12px;
+  animation: fadeIn 1s ease;
+}
+
+.release-chart {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.release-chart th, .release-chart td {
+  padding: 12px 20px;
+  text-align: left;
+  color: gold;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  text-shadow: 0 0 5px #ffd700, 0 0 15px #ffcc00;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: rowIn 0.6s ease forwards;
+}
+
+.release-chart th {
+  font-size: 1.3rem;
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes rowIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
     </style>
 </head>
 <body>
@@ -120,12 +175,31 @@
       <div class="buttons">
         <button>▶ Watch Trailer</button>
         <button>+ Add to My List</button>
+        <button onclick="showChart()">View Release Info</button>
       </div>
       <p class="description">
         A 17-year-old girl named Robin is drawn into a series of mystical adventures after following her wolf companion Ember through a swirling rainbow portal. Together, they explore magical realms, uncover ancient truths, and ignite the power of hope across the Realms of Light.
       </p>
     </div>
   </div>
+
+<div id="chartOverlay" class="overlay">
+  <div class="chart-container">
+    <table class="release-chart">
+      <thead>
+        <tr><th>Episode</th><th>Release Date</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Episode 1: Awakening</td><td>July 16, 2025</td></tr>
+        <tr><td>Episode 2: The Glowing Path</td><td>July 18, 2025</td></tr>
+        <tr><td>Episode 3: Ember's Secret</td><td>July 20, 2025</td></tr>
+        <tr><td>Episode 4: Trial of Realms</td><td>July 22, 2025</td></tr>
+        <tr><td>Episode 5: Light of the Core</td><td>July 24, 2025</td></tr>
+      </tbody>
+    </table>
+    <button onclick="hideChart()">Close</button>
+  </div>
+</div>
 
   <div class="details">
     <h2>Details</h2>
@@ -138,5 +212,29 @@
       <li><strong>Estimated Release Date:</strong> September 2025</li>
     </ul>
   </div>
+  <script>
+function showChart() {
+  const overlay = document.getElementById('chartOverlay');
+  overlay.style.display = 'flex';
+
+  const rows = overlay.querySelectorAll('.release-chart tbody tr');
+  rows.forEach((row, index) => {
+    row.style.animationDelay = `${index * 0.3}s`;
+  });
+}
+
+function hideChart() {
+  const overlay = document.getElementById('chartOverlay');
+  overlay.style.display = 'none';
+
+  // Reset animations
+  const rows = overlay.querySelectorAll('.release-chart tbody tr');
+  rows.forEach(row => {
+    row.style.animation = 'none';
+    row.offsetHeight; // trigger reflow
+    row.style.animation = '';
+  });
+}
+  </script>
 </body>
 </html>
