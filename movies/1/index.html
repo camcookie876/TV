@@ -1,177 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Robin & the Realms of Light</title>
-    <style>
-        body {
-            margin: 0;
-            background-color: #0d0d0d;
-            font-family: 'Segoe UI', sans-serif;
-            color: white;
-        }
+  <meta charset="UTF-8">
+  <title>Robin & the Realms of Light</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Base styles */
+    body {
+      margin: 0;
+      background-color: #0d0d0d;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
 
-        .buttons button {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            font-size: 1.1em;
-            margin-right: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            display: inline-block;
-            transition: background 0.2s;
-            min-width: 150px;
-        }
+    /* Hero section */
+    .hero {
+      position: relative;
+      background-image: url('https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png');
+      background-size: cover;
+      background-position: center;
+      height: 80vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 40px;
+      box-shadow: inset 0 -100px 150px rgba(0,0,0,0.8);
+    }
+    .content {
+      max-width: 800px;
+    }
+    .content h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+    .description {
+      font-size: 1.1em;
+      line-height: 1.5;
+      color: #ddd;
+    }
 
-        .buttons button:hover {
-            background-color: #1251a3;
-        }
+    /* Button group in hero */
+    .buttons {
+      margin: 20px 0;
+    }
+    .buttons button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      margin-right: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+      /* equal height for all blue buttons */
+      height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 25px;
+    }
+    .buttons button:hover {
+      background-color: #1251a3;
+    }
+    /* red link buttons keep original padding/height */
+    .buttons a {
+      background-color: #e50914;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1em;
+      margin-right: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 25px;
+    }
+    .buttons a:hover {
+      background-color: #b0060f;
+    }
 
-        .hero {
-            position: relative;
-            background-image: url('https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png'); /* Replace with your poster image */
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px;
-            box-shadow: inset 0 -100px 150px rgba(0,0,0,0.8);
-        }
+    /* Details section */
+    .details {
+      background-color: #1a1a1a;
+      padding: 30px 40px;
+      color: #fff;
+    }
+    .details h2 {
+      font-size: 1.8em;
+      margin-top: 0;
+    }
+    .details ul {
+      list-style: none;
+      padding: 0;
+    }
+    .details li {
+      margin-bottom: 8px;
+    }
 
-        .content {
-            max-width: 800px;
-        }
+    /* Overlay & popup */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 20, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+    .overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .chart-container {
+      max-width: 800px;
+      width: 90%;
+      padding: 20px;
+      background: #000000cc;
+      border-radius: 12px;
+    }
+    /* Release chart */
+    .release-chart {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .release-chart th,
+    .release-chart td {
+      padding: 12px 20px;
+      text-align: left;
+      color: #fff;                    /* not golden */
+      font-size: 1.1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: rowIn 0.6s ease forwards;
+    }
+    .release-chart th {
+      font-size: 1.3rem;
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    @keyframes rowIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        h1 {
-            font-size: 3em;
-            margin: 0;
-        }
+    /* Close button in popup */
+    .overlay button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+      /* same height as hero buttons */
+      height: 45px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 25px;
+      margin-top: 20px;
+    }
+    .overlay button:hover {
+      background-color: #1251a3;
+    }
 
-        .buttons {
-            margin: 20px 0;
-        }
-
-        .buttons a {
-            background-color: #e50914;
-            color: white;
-            text-decoration: none;
-            border: none;
-            padding: 10px 25px;
-            font-size: 1.1em;
-            margin-right: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-
-        .buttons a:hover {
-            background-color: #b0060f;
-        }
-
-        .description {
-            font-size: 1.1em;
-            line-height: 1.5;
-        }
-
-        .details {
-            background-color: #1a1a1a;
-            padding: 30px 40px;
-        }
-
-        .details h2 {
-            font-size: 1.8em;
-            margin-top: 0;
-        }
-
-        .details ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .details li {
-            margin-bottom: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                height: 60vh;
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .video-container iframe {
-                height: 250px;
-            }
-        }
-        .overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 20, 0.95);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-}
-
-.chart-container {
-  max-width: 800px;
-  width: 90%;
-  padding: 20px;
-  background: #000000cc;
-  border-radius: 12px;
-  animation: fadeIn 1s ease;
-}
-
-.release-chart {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.release-chart th, .release-chart td {
-  padding: 12px 20px;
-  text-align: left;
-  color: gold;
-  font-size: 1.1rem;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-  text-shadow: 0 0 5px #ffd700, 0 0 15px #ffcc00;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: rowIn 0.6s ease forwards;
-}
-
-.release-chart th {
-  font-size: 1.3rem;
-  opacity: 1;
-  transform: none;
-  animation: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
-
-@keyframes rowIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-    </style>
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .hero {
+        height: 60vh;
+        padding: 20px;
+      }
+      .content h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<!-- No script needed. Use anchor tags for buttons with hrefs. -->
   <div class="hero">
     <div class="content">
-    <h1>Robin & the Realms of Light</h1>
+      <h1>Robin & the Realms of Light</h1>
       <div class="buttons">
         <button>▶ Watch Trailer</button>
         <button>+ Add to My List</button>
@@ -183,23 +202,57 @@
     </div>
   </div>
 
-<div id="chartOverlay" class="overlay">
-  <div class="chart-container">
-    <table class="release-chart">
-      <thead>
-        <tr><th>Episode</th><th>Release Date</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Episode 1: Awakening</td><td>July 16, 2025</td></tr>
-        <tr><td>Episode 2: The Glowing Path</td><td>July 18, 2025</td></tr>
-        <tr><td>Episode 3: Ember's Secret</td><td>July 20, 2025</td></tr>
-        <tr><td>Episode 4: Trial of Realms</td><td>July 22, 2025</td></tr>
-        <tr><td>Episode 5: Light of the Core</td><td>July 24, 2025</td></tr>
-      </tbody>
-    </table>
-    <button onclick="hideChart()">Close</button>
+  <div id="chartOverlay" class="overlay">
+    <div class="chart-container">
+      <table class="release-chart">
+        <thead>
+          <tr>
+            <th>Chapter</th>
+            <th>Title</th>
+            <th>Public Release Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Trailer</td>
+            <td>Robin & the Realms of Light – Official Trailer</td>
+            <td>July 20, 2025</td>
+          </tr>
+          <tr>
+            <td>Episode 1</td>
+            <td>The First Light</td>
+            <td>July 24, 2025</td>
+          </tr>
+          <tr>
+            <td>Episode 2</td>
+            <td>Through the Shadow Grove</td>
+            <td>July 27, 2025</td>
+          </tr>
+          <tr>
+            <td>Episode 3</td>
+            <td>Secrets of the Skybridge</td>
+            <td>July 30, 2025</td>
+          </tr>
+          <tr>
+            <td>Episode 4</td>
+            <td>The Mirror Realm</td>
+            <td>August 2, 2025</td>
+          </tr>
+          <tr>
+            <td>Episode 5</td>
+            <td>The Ember&apos;s Heart</td>
+            <td>August 5, 2025</td>
+          </tr>
+          <tr>
+            <td>Full Movie</td>
+            <td>Robin & the Realms of Light (Full Film)</td>
+            <td>December 15, 2025</td>
+          </tr>
+        </tbody>
+      </table>
+      <button onclick="hideChart()">Close</button>
+    </div>
   </div>
-</div>
 
   <div class="details">
     <h2>Details</h2>
@@ -212,29 +265,30 @@
       <li><strong>Estimated Release Date:</strong> September 2025</li>
     </ul>
   </div>
+
   <script>
-function showChart() {
-  const overlay = document.getElementById('chartOverlay');
-  overlay.style.display = 'flex';
+    function showChart() {
+      const overlay = document.getElementById('chartOverlay');
+      overlay.classList.add('active');
 
-  const rows = overlay.querySelectorAll('.release-chart tbody tr');
-  rows.forEach((row, index) => {
-    row.style.animationDelay = `${index * 0.3}s`;
-  });
-}
+      const rows = overlay.querySelectorAll('.release-chart tbody tr');
+      rows.forEach((row, i) => {
+        row.style.animationDelay = `${i * 0.3}s`;
+      });
+    }
 
-function hideChart() {
-  const overlay = document.getElementById('chartOverlay');
-  overlay.style.display = 'none';
+    function hideChart() {
+      const overlay = document.getElementById('chartOverlay');
+      overlay.classList.remove('active');
 
-  // Reset animations
-  const rows = overlay.querySelectorAll('.release-chart tbody tr');
-  rows.forEach(row => {
-    row.style.animation = 'none';
-    row.offsetHeight; // trigger reflow
-    row.style.animation = '';
-  });
-}
+      // Reset row animations for next open
+      const rows = overlay.querySelectorAll('.release-chart tbody tr');
+      rows.forEach(row => {
+        row.style.animation = 'none';
+        row.offsetHeight; // force reflow
+        row.style.animation = '';
+      });
+    }
   </script>
 </body>
 </html>
