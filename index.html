@@ -2,81 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Camcookie TV - Movies</title>
+  <title>Camcookie TV - HOME</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  .poster-ticker-container {
+    overflow: hidden;
+    width: 100%;
+  }
 
-  <style>
-    :root {
-      --main-color: #0099ff;
-      --bg: #181818;
-      --header-bg: #101c24;
-    }
+  .poster-ticker-wrapper {
+    display: flex;
+    animation: slideLeft linear infinite;
+    animation-duration: 30s; /* adjust for speed */
+  }
 
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: #fff;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      overflow-x: hidden;
-    }
+  .poster-ticker-wrapper img {
+    width: 250px;
+    height: 375px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    margin-right: 24px;
+    flex-shrink: 0;
+  }
 
-    header {
-      background: linear-gradient(90deg, var(--main-color), var(--header-bg));
-      padding: 24px 32px;
-      font-size: 2rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  @keyframes slideLeft {
+    0% {
+      transform: translateX(0);
     }
-
-    header .logo {
-      width: 48px;
-      height: 48px;
-      background: #d32f2f;
-      color: #fff;
-      font-weight: bold;
-      font-size: 0.9rem;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 8px #d32f2f99;
-      margin-right: 16px;
+    100% {
+      transform: translateX(-50%);
     }
-
-    main {
-      padding: 32px;
-    }
-
-    .section-title {
-      font-size: 1.4rem;
-      color: var(--main-color);
-      margin-bottom: 24px;
-    }
-
-    .poster-ticker-container {
-      overflow: hidden;
-      width: 100%;
-    }
-
-    .poster-ticker-wrapper {
-      display: flex;
-      /* ensures children stay in a single row */
-      white-space: nowrap;
-    }
-
-    .poster-ticker-wrapper img {
-      width: 250px;
-      height: 375px;
-      border-radius: 8px;
-      object-fit: cover;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      margin-right: 24px;
-      flex-shrink: 0;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <header>
@@ -92,7 +50,6 @@
       </div>
     </div>
   </main>
-
 <script>
   const posterSources = [
     "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
@@ -100,37 +57,14 @@
     "https://camcookie876.github.io/TV/images/EX_2.png"
   ];
   const ticker = document.getElementById('posterTicker');
-  const speed = 1;
 
-  // Duplicate posters to fill space
-  posterSources.concat(posterSources).forEach(src => {
+  // Add posters twice for looping effect
+  [...posterSources, ...posterSources].forEach(src => {
     const img = document.createElement('img');
     img.src = src;
     img.alt = "Movie Poster";
     ticker.appendChild(img);
   });
-
-  function initTicker() {
-    ticker.scrollLeft = ticker.scrollWidth; // Start at far right
-    requestAnimationFrame(scrollTick);
-  }
-
-  function scrollTick() {
-    ticker.scrollLeft -= speed;
-
-    const last = ticker.children[ticker.children.length - 1];
-    const style = getComputedStyle(last);
-    const totalWidth = last.offsetWidth + parseInt(style.marginRight);
-
-    if (ticker.scrollLeft <= 0) {
-      ticker.insertBefore(last, ticker.children[0]);
-      ticker.scrollLeft += totalWidth;
-    }
-
-    requestAnimationFrame(scrollTick);
-  }
-
-  window.addEventListener('load', initTicker);
 </script>
 </body>
 </html>
