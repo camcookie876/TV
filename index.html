@@ -93,45 +93,44 @@
     </div>
   </main>
 
-  <script>
-    const posterSources = [
-      "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
-      "https://camcookie876.github.io/TV/images/EX_1.png",
-      "https://camcookie876.github.io/TV/images/EX_2.png"
-    ];
-    const ticker = document.getElementById('posterTicker');
-    const speed = 1; // pixels per frame
+<script>
+  const posterSources = [
+    "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
+    "https://camcookie876.github.io/TV/images/EX_1.png",
+    "https://camcookie876.github.io/TV/images/EX_2.png"
+  ];
+  const ticker = document.getElementById('posterTicker');
+  const speed = 1;
 
-    // Inject two rounds of posters so wrapper width > container width
-    posterSources.concat(posterSources).forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = "Movie Poster";
-      ticker.appendChild(img);
-    });
+  // Duplicate posters to fill space
+  posterSources.concat(posterSources).forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = "Movie Poster";
+    ticker.appendChild(img);
+  });
 
-    function initTicker() {
-      requestAnimationFrame(scrollTick);
+  function initTicker() {
+    ticker.scrollLeft = ticker.scrollWidth; // Start at far right
+    requestAnimationFrame(scrollTick);
+  }
+
+  function scrollTick() {
+    ticker.scrollLeft -= speed;
+
+    const last = ticker.children[ticker.children.length - 1];
+    const style = getComputedStyle(last);
+    const totalWidth = last.offsetWidth + parseInt(style.marginRight);
+
+    if (ticker.scrollLeft <= 0) {
+      ticker.insertBefore(last, ticker.children[0]);
+      ticker.scrollLeft += totalWidth;
     }
 
-    function scrollTick() {
-      // Move scroll by speed
-      ticker.scrollLeft += speed;
+    requestAnimationFrame(scrollTick);
+  }
 
-      // When the first poster has fully scrolled out, recycle it
-      const first = ticker.children[0];
-      const style = getComputedStyle(first);
-      const totalWidth = first.offsetWidth + parseInt(style.marginRight);
-
-      if (ticker.scrollLeft >= totalWidth) {
-        ticker.appendChild(first);
-        ticker.scrollLeft -= totalWidth;
-      }
-
-      requestAnimationFrame(scrollTick);
-    }
-
-    window.addEventListener('load', initTicker);
-  </script>
+  window.addEventListener('load', initTicker);
+</script>
 </body>
 </html>
