@@ -31,7 +31,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
-    header span.logo {
+    header .logo {
       width: 48px;
       height: 48px;
       background: #d32f2f;
@@ -63,7 +63,8 @@
 
     .poster-ticker-wrapper {
       display: flex;
-      width: max-content;
+      /* ensures children stay in a single row */
+      white-space: nowrap;
     }
 
     .poster-ticker-wrapper img {
@@ -73,6 +74,7 @@
       object-fit: cover;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       margin-right: 24px;
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -86,7 +88,7 @@
     <div class="section-title">Featured Movies</div>
     <div class="poster-ticker-container">
       <div class="poster-ticker-wrapper" id="posterTicker">
-        <!-- Posters will be injected by JavaScript -->
+        <!-- Posters will be injected here -->
       </div>
     </div>
   </main>
@@ -98,10 +100,10 @@
       "https://camcookie876.github.io/TV/images/EX_2.png"
     ];
     const ticker = document.getElementById('posterTicker');
-    const speed = 1; // pixels per frame (adjust for faster/slower scroll)
+    const speed = 1; // pixels per frame
 
-    // Inject posters
-    posterSources.forEach(src => {
+    // Inject two rounds of posters so wrapper width > container width
+    posterSources.concat(posterSources).forEach(src => {
       const img = document.createElement('img');
       img.src = src;
       img.alt = "Movie Poster";
@@ -113,8 +115,10 @@
     }
 
     function scrollTick() {
+      // Move scroll by speed
       ticker.scrollLeft += speed;
 
+      // When the first poster has fully scrolled out, recycle it
       const first = ticker.children[0];
       const style = getComputedStyle(first);
       const totalWidth = first.offsetWidth + parseInt(style.marginRight);
