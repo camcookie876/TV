@@ -51,7 +51,6 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.2s;
-      /* equal height for all blue buttons */
       height: 45px;
       display: inline-flex;
       align-items: center;
@@ -61,7 +60,6 @@
     .buttons button:hover {
       background-color: #1251a3;
     }
-    /* red link buttons keep original padding/height */
     .buttons a {
       background-color: #e50914;
       color: white;
@@ -116,13 +114,16 @@
       opacity: 1;
       pointer-events: auto;
     }
+
     .chart-container {
       max-width: 800px;
       width: 90%;
       padding: 20px;
-      background: #000000cc;
+      background-color: #1976d2;    /* Blue like the buttons */
+      color: white;                  /* White text */
       border-radius: 12px;
     }
+
     /* Release chart */
     .release-chart {
       width: 100%;
@@ -133,7 +134,7 @@
     .release-chart td {
       padding: 12px 20px;
       text-align: left;
-      color: #fff;                    /* not golden */
+      color: white;
       font-size: 1.1rem;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       opacity: 0;
@@ -162,7 +163,6 @@
       font-size: 1.1em;
       cursor: pointer;
       transition: background 0.2s;
-      /* same height as hero buttons */
       height: 45px;
       display: inline-flex;
       align-items: center;
@@ -213,41 +213,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Trailer</td>
-            <td>Robin & the Realms of Light – Official Trailer</td>
-            <td>July 20, 2025</td>
-          </tr>
-          <tr>
-            <td>Episode 1</td>
-            <td>The First Light</td>
-            <td>July 24, 2025</td>
-          </tr>
-          <tr>
-            <td>Episode 2</td>
-            <td>Through the Shadow Grove</td>
-            <td>July 27, 2025</td>
-          </tr>
-          <tr>
-            <td>Episode 3</td>
-            <td>Secrets of the Skybridge</td>
-            <td>July 30, 2025</td>
-          </tr>
-          <tr>
-            <td>Episode 4</td>
-            <td>The Mirror Realm</td>
-            <td>August 2, 2025</td>
-          </tr>
-          <tr>
-            <td>Episode 5</td>
-            <td>The Ember&apos;s Heart</td>
-            <td>August 5, 2025</td>
-          </tr>
-          <tr>
-            <td>Full Movie</td>
-            <td>Robin & the Realms of Light (Full Film)</td>
-            <td>December 15, 2025</td>
-          </tr>
+          <tr><td>Trailer</td><td>Robin & the Realms of Light – Official Trailer</td><td>July 20, 2025</td></tr>
+          <tr><td>Episode 1</td><td>The First Light</td><td>July 24, 2025</td></tr>
+          <tr><td>Episode 2</td><td>Through the Shadow Grove</td><td>July 27, 2025</td></tr>
+          <tr><td>Episode 3</td><td>Secrets of the Skybridge</td><td>July 30, 2025</td></tr>
+          <tr><td>Episode 4</td><td>The Mirror Realm</td><td>August 2, 2025</td></tr>
+          <tr><td>Episode 5</td><td>The Ember's Heart</td><td>August 5, 2025</td></tr>
+          <tr><td>Full Movie</td><td>Robin & the Realms of Light (Full Film)</td><td>December 15, 2025</td></tr>
         </tbody>
       </table>
       <button onclick="hideChart()">Close</button>
@@ -281,7 +253,7 @@
       const overlay = document.getElementById('chartOverlay');
       overlay.classList.remove('active');
 
-      // Reset row animations for next open
+      // Reset animations
       const rows = overlay.querySelectorAll('.release-chart tbody tr');
       rows.forEach(row => {
         row.style.animation = 'none';
