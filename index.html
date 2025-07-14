@@ -1,70 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Camcookie TV - HOME</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  .poster-ticker-container {
-    overflow: hidden;
-    width: 100%;
-  }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  .poster-ticker-wrapper {
-    display: flex;
-    animation: slideLeft linear infinite;
-    animation-duration: 30s; /* adjust for speed */
-  }
-
-  .poster-ticker-wrapper img {
-    width: 250px;
-    height: 375px;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    margin-right: 24px;
-    flex-shrink: 0;
-  }
-
-  @keyframes slideLeft {
-    0% {
-      transform: translateX(0);
+  <style>
+    :root {
+      --main-color: #0099ff;
+      --bg: #181818;
+      --header-bg: #101c24;
     }
-    100% {
-      transform: translateX(-50%);
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow-x: hidden;
     }
-  }
-</style>
+
+    header {
+      background: linear-gradient(90deg, var(--main-color), var(--header-bg));
+      padding: 1rem 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #d32f2f;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-right: 1rem;
+      box-shadow: 0 0 8px #d32f2f99;
+      overflow: hidden;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      color: var(--main-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .poster-ticker-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .poster-ticker-track {
+      display: flex;
+      width: max-content;
+      position: relative;
+      left: 0;
+    }
+
+    .poster,
+    .poster-placeholder {
+      width: clamp(160px, 25vw, 250px);
+      height: clamp(240px, 37vw, 375px);
+      border-radius: 8px;
+      margin-right: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+    }
+
+    .poster {
+      object-fit: cover;
+    }
+
+    .poster-placeholder {
+      background-color: #0066cc;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
-    <span class="logo">TV</span>
+    <span class="logo"><img src="ERROR" alt="TV Logo"onerror="this.style.display='none'; this.parentElement.textContent='TV';" /></span>
     Camcookie TV - Movies
   </header>
 
   <main>
     <div class="section-title">Featured Movies</div>
     <div class="poster-ticker-container">
-      <div class="poster-ticker-wrapper" id="posterTicker">
-        <!-- Posters will be injected here -->
-      </div>
+      <div class="poster-ticker-track" id="posterTicker"></div>
     </div>
   </main>
-<script>
-  const posterSources = [
-    "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
-    "https://camcookie876.github.io/TV/images/EX_1.png",
-    "https://camcookie876.github.io/TV/images/EX_2.png"
-  ];
-  const ticker = document.getElementById('posterTicker');
 
-  // Add posters twice for looping effect
-  [...posterSources, ...posterSources].forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = "Movie Poster";
-    ticker.appendChild(img);
-  });
-</script>
+  <script>
+    const posterSources = [
+      "https://camcookie876.github.io/TV/images/robin-&-the-relms-of-light.png",
+      "https://camcookie876.github.io/TV/images/EX_1.png",
+      "https://camcookie876.github.io/TV/images/EX_2.png"
+    ];
+
+    const ticker = document.getElementById("posterTicker");
+    const speed = 1;
+    let tickerX = 0;
+
+    // Build poster or placeholder
+    function createPoster(src) {
+      const img = document.createElement("img");
+      img.src = src;
+      img.className = "poster";
+      img.alt = "Movie Poster";
+
+      // Preload error fallback before displaying
+      img.onload = () => {
+        ticker.appendChild(img);
+      };
+
+      img.onerror = () => {
+        const fallback = document.createElement("div");
+        fallback.className = "poster-placeholder";
+        fallback.textContent = "Camcookie";
+        ticker.appendChild(fallback);
+      };
+    }
+
+    // Fill ticker with repeated posters
+    function fillTicker() {
+      for (let i = 0; i < 12; i++) {
+        const src = posterSources[i % posterSources.length];
+        createPoster(src);
+      }
+    }
+
+    // Scroll function
+    function scrollTicker() {
+      tickerX -= speed;
+      ticker.style.left = tickerX + "px";
+
+      // If track is almost empty, refill
+      if (-tickerX + window.innerWidth > ticker.scrollWidth - 300) {
+        const nextSrc = posterSources[ticker.children.length % posterSources.length];
+        createPoster(nextSrc);
+      }
+
+      requestAnimationFrame(scrollTicker);
+    }
+
+    // Start loop
+    window.addEventListener("load", () => {
+      fillTicker();
+      requestAnimationFrame(scrollTicker);
+    });
+  </script>
 </body>
 </html>
