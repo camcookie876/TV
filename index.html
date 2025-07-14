@@ -64,7 +64,6 @@
     .poster-ticker-wrapper {
       display: flex;
       width: max-content;
-      animation: scrollPosters linear infinite;
     }
 
     .poster-ticker-wrapper img {
@@ -98,35 +97,37 @@
       "https://camcookie876.github.io/TV/images/EX_1.png",
       "https://camcookie876.github.io/TV/images/EX_2.png"
     ];
+    const ticker = document.getElementById('posterTicker');
+    const speed = 1; // pixels per frame (adjust for faster/slower scroll)
 
-    const ticker = document.getElementById("posterTicker");
+    // Inject posters
+    posterSources.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Movie Poster";
+      ticker.appendChild(img);
+    });
 
-    // Duplicate posters to allow seamless loop
-    for (let i = 0; i < 2; i++) {
-      posterSources.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = "Movie Poster";
-        ticker.appendChild(img);
-      });
+    function initTicker() {
+      requestAnimationFrame(scrollTick);
     }
 
-    // Dynamically calculate width and scroll duration
-    window.onload = () => {
-      const totalWidth = ticker.scrollWidth;
-      const speed = 60; // pixels/sec
+    function scrollTick() {
+      ticker.scrollLeft += speed;
 
-      ticker.style.animationDuration = `${totalWidth / speed}s`;
+      const first = ticker.children[0];
+      const style = getComputedStyle(first);
+      const totalWidth = first.offsetWidth + parseInt(style.marginRight);
 
-      const styleTag = document.createElement("style");
-      styleTag.innerHTML = `
-        @keyframes scrollPosters {
-          from { transform: translateX(0); }
-          to { transform: translateX(-${totalWidth / 2}px); }
-        }
-      `;
-      document.head.appendChild(styleTag);
-    };
+      if (ticker.scrollLeft >= totalWidth) {
+        ticker.appendChild(first);
+        ticker.scrollLeft -= totalWidth;
+      }
+
+      requestAnimationFrame(scrollTick);
+    }
+
+    window.addEventListener('load', initTicker);
   </script>
 </body>
 </html>
