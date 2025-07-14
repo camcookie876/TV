@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Camcookie TV - Home</title>
+    <title>Camcookie TV - Movies</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         :root {
@@ -60,7 +60,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 16px rgba(0, 126, 235, 0.3);
             cursor: pointer;
             transition: 
                 transform 0.2s, 
@@ -69,12 +69,11 @@
             text-align: center;
             border: 2px solid transparent;
             position: relative;
-            overflow: hidden;
-            padding-bottom: 16px;
+            overflow: hidden; padding-bottom: 16px;
         }
         .app-card:hover, .app-card:focus {
             transform: scale(1.06);
-            box-shadow: 0 8px 32px var(--main-color), 0 2px 8px #0006;
+            box-shadow: 0 8px 32px var(--main-color), 0 2px 8px #0099ff44;
             border: 2px solid var(--main-color);
             outline: none;
             background: linear-gradient(135deg, var(--card-bg) 60%, var(--card-hover) 100%);
@@ -115,7 +114,7 @@
         /* Ensure poster images fit without being cut off */
         .poster-img {
             object-fit: contain !important;
-            background: #222 !important;
+            background: #0099ff !important;
         }
     </style>
     <script>
