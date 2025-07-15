@@ -3,153 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <title>Robin &amp; the Realms of Light Trailer</title>
+  <!-- Nice font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #2196F3;
+      --error:   #f44336;
+      --bg:      #000;
+      --text:    #fff;
+      --text-light: #ddd;
+    }
+    /* reset & full-page */
+    * { margin:0; padding:0; box-sizing:border-box; user-select: none; }
+    html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); }
     body {
-      background: #121212;
-      color: #EEE;
-      font-family: sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 0;
+      font-family: 'Poppins', sans-serif;
+      cursor: default;
     }
 
-    #player {
-      width: 640px;
+    /* full-screen video container */
+    #video-container {
       position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg);
     }
-
-    /* Title */
-    #title {
-      text-align: center;
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-    }
-
     video {
-      width: 100%;
+      width:100%; height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    /* title & controls overlay */
+    #title, #controls {
+      position: absolute;
+      left: 0; right: 0;
+      opacity: 1;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+    .hide-ui #title,
+    .hide-ui #controls {
+      opacity: 0;
+    }
+    #title {
+      top: 16px;
+      text-align: center;
+      font-size: 1.6rem;
+      color: var(--text);
       background: #000;
-      display: block;
+      padding: 8px 0;
+      z-index: 2;
     }
-
-    /* Controls */
+    /* controls panel */
     #controls {
-      margin-top: 12px;
-      user-select: none;
+      bottom: 16px;
+      padding: 0 16px;
+      pointer-events: auto;
+      z-index: 2;
     }
-
     #time-progress {
       display: flex;
       align-items: center;
       gap: 8px;
+      background: #000;
+      padding: 8px;
+      border-radius: 4px;
     }
-
     .time-label {
-      width: 50px;
-      text-align: center;
-      font-size: 0.9rem;
+      width:50px;
+      text-align:center;
+      font-size:0.9rem;
+      color: var(--text-light);
     }
-
     #progress-container {
       position: relative;
       flex: 1;
       height: 8px;
-      background: #E0E0E0;
+      background: #444;
       border-radius: 4px;
       cursor: pointer;
     }
-
     #progress-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0%;
-      background: #2196F3;
+      position:absolute; top:0; left:0;
+      width:0;
+      height:100%;
+      background: var(--primary);
       border-radius: 4px;
     }
-
     #progress-knob {
-      position: absolute;
-      top: 50%;
-      left: 0%;
-      width: 16px;
-      height: 16px;
-      background: #FF5722;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
+      position:absolute;
+      top:50%; left:0%;
+      width:16px; height:16px;
+      background:#FF5722;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      cursor:pointer;
     }
 
-    /* End‐of‐Video Overlay */
-    #overlay {
-      display: none;
+    /* center play button */
+    #play-button {
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      opacity:0; visibility:hidden;
+      transition:opacity 0.5s;
+      z-index:3;
+    }
+    #play-button.visible {
+      opacity:1; visibility:visible;
+    }
+
+    /* full-screen overlays */
+    .overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      color: #FFF;
-      font-family: sans-serif;
+      top:0; left:0;
+      width:100vw; height:100vh;
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      z-index: 10;
-    }
-
-    #overlay button {
-      margin: 8px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      background: #2196F3;
-      color: #FFF;
-    }
-
-    /* Error Overlay */
-    #error-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      color: #FFF;
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 20;
       text-align: center;
-      padding: 0 20px;
+      color: var(--text);
+      z-index:4;
+      display: none;
     }
-
-    #error-overlay h2 {
-      margin-bottom: 12px;
+    .overlay h2 { margin-bottom:12px; font-weight:600; }
+    .overlay p { margin-bottom:20px; color:var(--text-light); }
+    .overlay button {
+      margin:8px;
+      padding:12px 24px;
+      font-size:1rem;
+      font-weight:600;
+      border:2px solid var(--primary);
+      border-radius:4px;
+      background: var(--primary);
+      color:#fff;
+      cursor:pointer;
+      transition:background 0.3s;
     }
-
-    #error-overlay p {
-      margin-bottom: 20px;
-    }
-
-    #error-exit {
-      padding: 12px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      background: #2196F3;
-      color: #FFF;
+    .overlay button:hover {
+      background: #1976D2;
     }
   </style>
 </head>
-<body>
-  <div id="player">
-    <div id="title">Robin &amp; the Realms of Light Trailer</div>
+<body oncontextmenu="return false;">
+  <div id="video-container" class="show-ui">
     <video id="video" controlsList="nodownload" disablepictureinpicture></video>
+    <div id="title">Robin &amp; the Realms of Light Trailer</div>
+
     <div id="controls">
       <div id="time-progress">
         <span id="current-time" class="time-label">0:00</span>
@@ -160,148 +164,193 @@
         <span id="duration" class="time-label">0:00</span>
       </div>
     </div>
+
+    <div id="play-button">
+      <svg width="80" height="80" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="30" fill="var(--primary)"/>
+        <polygon points="26,20 26,44 46,32" fill="#fff"/>
+      </svg>
+    </div>
   </div>
 
-  <div id="overlay">
+  <div id="end-overlay" class="overlay">
     <h2>The Trailer Has Ended</h2>
     <button id="watch-again">Watch Again</button>
     <button id="exit-video">Exit Trailer</button>
     <button id="watch-movie">Watch Movie</button>
   </div>
 
-  <div id="error-overlay">
+  <div id="error-overlay" class="overlay">
+    <!-- red exclamation SVG -->
+    <svg width="64" height="64" viewBox="0 0 64 64" style="margin-bottom:12px;">
+      <circle cx="32" cy="32" r="30" fill="none"
+              stroke="var(--error)" stroke-width="4"/>
+      <line x1="32" y1="18" x2="32" y2="38"
+            stroke="var(--error)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="32" cy="48" r="3" fill="var(--error)"/>
+    </svg>
     <h2>Error Loading Video</h2>
-    <p>There was an error and you cannot watch the video.</p>
+    <p>There was an error and you cannot watch the video.<br/>Please try again later.</p>
     <button id="error-exit">Go Back</button>
   </div>
 
   <script>
-    (function() {
-      // Configure your links here
-      const links = {
-        watchAgain: '', 
-        exit: 'https://camcookie876.github.io/TV/movies/1/',
-        movie: ''
-      };
+  (function(){
+    const segments = [
+      'segment1.mp4',
+      'segment2.mp4',
+      'segment3.mp4'
+      // add more URLs…
+    ];
+    const links = {
+      watchAgain: '',
+      exit:   'https://camcookie876.github.io/TV/movies/1/',
+      movie:  ''
+    };
+    const maxRetries = 3;
+    const attempts = segments.map(()=>0);
 
-      const segments = ['segment1.mp4', 'segment2.mp4', 'segment3.mp4'];
-      const maxRetries = 3;
-      const attempts = segments.map(() => 0);
+    const container      = document.getElementById('video-container');
+    const video          = document.getElementById('video');
+    const currentTimeLbl = document.getElementById('current-time');
+    const durationLbl    = document.getElementById('duration');
+    const progBar        = document.getElementById('progress-bar');
+    const progKnob       = document.getElementById('progress-knob');
+    const progContainer  = document.getElementById('progress-container');
+    const playBtn        = document.getElementById('play-button');
+    const endOverlay     = document.getElementById('end-overlay');
+    const errorOverlay   = document.getElementById('error-overlay');
+    const btnAgain       = document.getElementById('watch-again');
+    const btnExit        = document.getElementById('exit-video');
+    const btnMovie       = document.getElementById('watch-movie');
+    const btnErrorExit   = document.getElementById('error-exit');
 
-      // Elements
-      const video = document.getElementById('video');
-      const overlay = document.getElementById('overlay');
-      const errorOverlay = document.getElementById('error-overlay');
-      const btnAgain = document.getElementById('watch-again');
-      const btnExit = document.getElementById('exit-video');
-      const btnMovie = document.getElementById('watch-movie');
-      const btnErrorExit = document.getElementById('error-exit');
+    // hide end-buttons if no link
+    if (!links.watchAgain) btnAgain.style.display = 'none';
+    if (!links.exit)       btnExit.style.display  = 'none';
+    if (!links.movie)      btnMovie.style.display = 'none';
 
-      const currentTimeLabel = document.getElementById('current-time');
-      const durationLabel    = document.getElementById('duration');
-      const progressBar      = document.getElementById('progress-bar');
-      const progressKnob     = document.getElementById('progress-knob');
-      const progressContainer= document.getElementById('progress-container');
+    function formatTime(sec){
+      const s = Math.floor(sec%60).toString().padStart(2,'0');
+      const m = Math.floor((sec/60)%60).toString().padStart(2,'0');
+      const h = Math.floor(sec/3600);
+      return h>0 ? `${h}:${m}:${s}` : `${m}:${s}`;
+    }
+    function showError(){
+      video.pause();
+      errorOverlay.style.display = 'flex';
+    }
 
-      // Hide buttons without links
-      if (!links.watchAgain) btnAgain.style.display = 'none';
-      if (!links.exit)       btnExit.style.display  = 'none';
-      if (!links.movie)      btnMovie.style.display = 'none';
+    // preload durations
+    Promise.all(segments.map(u=>new Promise((res,rej)=>{
+      const t = document.createElement('video');
+      t.preload='metadata';
+      t.src = u;
+      t.onloadedmetadata = ()=>res(t.duration);
+      t.onerror = ()=>rej();
+    })))
+    .then(durs=>{
+      const totalDur = durs.reduce((a,b)=>a+b,0);
+      if (!window.MediaSource) return showError();
 
-      // format H:MM:SS or M:SS
-      function formatTime(sec) {
-        const s = Math.floor(sec % 60).toString().padStart(2,'0');
-        const m = Math.floor((sec/60) % 60).toString().padStart(2,'0');
-        const h = Math.floor(sec/3600);
-        return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
-      }
+      const ms = new MediaSource();
+      video.src = URL.createObjectURL(ms);
 
-      // Show error overlay
-      function showError() {
-        video.pause();
-        errorOverlay.style.display = 'flex';
-      }
-
-      // Seamless segment loading with retry logic
-      if (!window.MediaSource) {
-        return showError();
-      }
-      const mediaSource = new MediaSource();
-      video.src = URL.createObjectURL(mediaSource);
-
-      mediaSource.addEventListener('sourceopen', () => {
+      ms.addEventListener('sourceopen', ()=>{
         URL.revokeObjectURL(video.src);
-        const sb = mediaSource.addSourceBuffer('video/mp4; codecs="avc1.640028, mp4a.40.2"');
-        let index = 0;
+        ms.duration = totalDur;
+        const sb = ms.addSourceBuffer('video/mp4; codecs="avc1.640028, mp4a.40.2"');
+        let idx=0;
+        sb.addEventListener('updateend', appendSeg);
+        appendSeg();
 
-        function fetchSegment() {
-          if (index >= segments.length) {
-            mediaSource.endOfStream();
-            return;
-          }
-          attempts[index]++;
-          fetch(segments[index]).then(r => {
-            if (!r.ok) throw new Error('Fetch failed');
-            return r.arrayBuffer();
-          }).then(buf => {
-            sb.appendBuffer(buf);
-            index++;
-          }).catch(() => {
-            if (attempts[index] < maxRetries) {
-              fetchSegment();
-            } else {
-              showError();
-            }
-          });
+        function appendSeg(){
+          if(idx>=segments.length) return ms.endOfStream();
+          attempts[idx]++;
+          fetch(segments[idx])
+            .then(r=>{ if(!r.ok) throw 0; return r.arrayBuffer(); })
+            .then(buf=>{ sb.appendBuffer(buf); idx++; })
+            .catch(_=> attempts[idx]<maxRetries ? appendSeg() : showError());
         }
-
-        sb.addEventListener('updateend', fetchSegment);
-        fetchSegment();
       });
 
-      // Update duration & progress
-      video.addEventListener('loadedmetadata', () => {
-        durationLabel.textContent = formatTime(video.duration);
+      video.addEventListener('loadedmetadata', ()=>{
+        durationLbl.textContent = formatTime(video.duration);
       });
+      video.addEventListener('timeupdate', ()=>{
+        const pct = video.currentTime/video.duration*100;
+        progBar.style.width = pct+'%';
+        progKnob.style.left = pct+'%';
+        currentTimeLbl.textContent = formatTime(video.currentTime);
+      });
+    })
+    .catch(showError);
 
-      video.addEventListener('timeupdate', () => {
-        const pct = (video.currentTime / video.duration) * 100;
-        progressBar.style.width = pct + '%';
-        progressKnob.style.left = pct + '%';
-        currentTimeLabel.textContent = formatTime(video.currentTime);
-      });
+    // seeking
+    progContainer.addEventListener('click', e=>{
+      const r = progContainer.getBoundingClientRect();
+      video.currentTime = (e.clientX - r.left)/r.width * video.duration;
+    });
+    let dragging=false;
+    progKnob.addEventListener('mousedown', ()=>dragging=true);
+    document.addEventListener('mouseup', ()=>dragging=false);
+    document.addEventListener('mousemove', e=>{
+      if(!dragging) return;
+      const r = progContainer.getBoundingClientRect();
+      let x = Math.max(0, Math.min(e.clientX - r.left, r.width));
+      video.currentTime = x/r.width * video.duration;
+    });
 
-      // Seek by click/drag
-      progressContainer.addEventListener('click', e => {
-        const rect = progressContainer.getBoundingClientRect();
-        video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
-      });
-      let dragging = false;
-      progressKnob.addEventListener('mousedown', () => dragging = true);
-      document.addEventListener('mouseup', () => dragging = false);
-      document.addEventListener('mousemove', e => {
-        if (!dragging) return;
-        const rect = progressContainer.getBoundingClientRect();
-        let x = e.clientX - rect.left;
-        x = Math.max(0, Math.min(x, rect.width));
-        video.currentTime = (x / rect.width) * video.duration;
-      });
+    // auto-hide UI on inactivity
+    let ti;
+    function showUI(){
+      container.classList.remove('hide-ui');
+      clearTimeout(ti);
+      ti = setTimeout(()=> container.classList.add('hide-ui'), 3000);
+    }
+    container.addEventListener('mousemove', showUI);
+    showUI();
 
-      // End‐of‐video overlay
-      video.addEventListener('ended', () => {
-        overlay.style.display = 'flex';
-      });
-
-      // Button actions
-      if (links.watchAgain) btnAgain.onclick = () => {
-        overlay.style.display = 'none';
-        video.currentTime = 0;
+    // center-click pause/play
+    video.addEventListener('click', ()=>{
+      if(!video.paused && !video.ended){
+        video.pause();
+        playBtn.classList.add('visible');
+      }
+    });
+    playBtn.addEventListener('click', ()=>{
+      playBtn.style.opacity = 0;
+      playBtn.addEventListener('transitionend', ()=>{
+        playBtn.classList.remove('visible');
+        playBtn.style.opacity = '';
         video.play();
-      };
-      if (links.exit) btnExit.onclick = () => location.href = links.exit;
-      if (links.movie) btnMovie.onclick = () => location.href = links.movie;
-      btnErrorExit.onclick = () => location.href = links.exit;
-    })();
+      }, { once:true });
+    });
+    video.addEventListener('pause', ()=>{
+      if(!video.ended && video.currentTime>0){
+        playBtn.classList.add('visible');
+      }
+    });
+    video.addEventListener('play', ()=> playBtn.classList.remove('visible'));
+
+    // trailer end
+    video.addEventListener('ended', ()=>{
+      endOverlay.style.display = 'flex';
+    });
+
+    // end-screen buttons
+    if(links.watchAgain) btnAgain.onclick = ()=>{
+      endOverlay.style.display='none';
+      video.currentTime=0;
+      video.play();
+    };
+    if(links.exit) btnExit.onclick = ()=> location.href = links.exit;
+    if(links.movie) btnMovie.onclick = ()=> location.href = links.movie;
+    btnErrorExit.onclick = ()=> location.href = links.exit;
+
+    // disable right-click
+    document.addEventListener('contextmenu', e=>e.preventDefault());
+  })();
   </script>
 </body>
 </html>
